@@ -1,6 +1,8 @@
 FROM elixir:latest
 
-ARG app_dir="/app"
+ARG APP_DIR="/app"
+ARG PROJECT_NAME
+ARG OPTS=""
 
 # externall tools and deps
 RUN apt-get update && \
@@ -13,9 +15,9 @@ RUN mix local.hex --force && \
     mix local.rebar --force && \
     mix archive.install hex phx_new --force
 
-WORKDIR $app_dir
+WORKDIR $APP_DIR
 
-COPY . .
+RUN mix phx.new $PROJECT_NAME $OPTS
 
 CMD ["mix", "phx.server"]
 
